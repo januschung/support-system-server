@@ -1,4 +1,4 @@
-package com.example.supportsystemserver;
+package com.supportsystem.application;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
