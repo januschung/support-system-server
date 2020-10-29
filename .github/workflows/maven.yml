@@ -29,4 +29,4 @@ jobs:
       with:
         java-version: 15
     - name: Build with Maven
-      run: mvn clean install
+      run: mvn clean -DMYSQL_HOST=host.docker.internal install
