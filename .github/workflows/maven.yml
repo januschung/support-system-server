@@ -15,14 +15,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout support-system-database
+    - name: Checkout support-system-database and bring up database
       uses: actions/checkout@v2
       with:
         repository: januschung/support-system-db
         path: support-system-db
-
-    - name: Bring up database
-      run: docker-compose up -d
+        run: docker-compose up -d 
     
     - name: Checkout support-system-server
       uses: actions/checkout@v2
