@@ -29,4 +29,4 @@ jobs:
       with:
         java-version: 15
     - name: Build with Maven
-      run: export MYSQL_HOST=localhost && mvn clean install
+      run: mvn clean install
