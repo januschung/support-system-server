@@ -29,4 +29,4 @@ jobs:
       with:
         java-version: 15
     - name: Build with Maven
-      run: export MYSQL_HOST=127.0.0.1 && mvn clean install
+      run: export MYSQL_HOST=127.0.0.1 && export MYSQL_USERNAME=root && export MYSQL_PASSWOORD=password && mvn clean install
