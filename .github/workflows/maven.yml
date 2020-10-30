@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout support-system-database and bring up database
+    - name: Checkout support-system-database
       uses: actions/checkout@v2
       with:
         repository: januschung/support-system-db
@@ -29,4 +29,4 @@ jobs:
       with:
         java-version: 15
     - name: Build with Maven
-      run: export MYSQL_HOST=host.docker.internal && mvn clean install
+      run: export MYSQL_HOST=localhost && mvn clean install
