@@ -21,7 +21,7 @@ jobs:
         repository: januschung/support-system-db
         path: support-system-db
     - name: Bring up database
-      run: cd support-system-db && docker-compose up -d
+      run: cd support-system-db && docker-compose run -d --service-ports db
     - name: Checkout support-system-server
       uses: actions/checkout@v2
     - name: Set up JDK 15
