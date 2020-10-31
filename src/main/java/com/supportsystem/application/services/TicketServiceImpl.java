@@ -1,6 +1,7 @@
 package com.supportsystem.application.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,5 +19,8 @@ public class TicketServiceImpl implements TicketService {
 	public List<Ticket> getAllTickets() {
 		return ticketRepository.findAll();
 	}
+
+	@Override
+	public Optional<Ticket> getTicketById(Long id) { return ticketRepository.findById(id); }
 
 }
