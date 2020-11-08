@@ -8,7 +8,7 @@
         <version>2.3.4.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.example</groupId>
+    <groupId>com.supportsystem</groupId>
     <artifactId>support-system-server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>support-system-server</name>
@@ -58,7 +58,12 @@
 		    <groupId>io.springfox</groupId>
 		    <artifactId>springfox-boot-starter</artifactId>
 		    <version>3.0.0</version>
-		</dependency>        
+		</dependency>
+		<dependency>
+		  <groupId>org.modelmapper</groupId>
+		  <artifactId>modelmapper</artifactId>
+		  <version>2.3.8</version>
+		</dependency>		        
     </dependencies>
 
     <build>

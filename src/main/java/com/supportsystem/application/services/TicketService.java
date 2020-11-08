@@ -1,15 +1,15 @@
 package com.supportsystem.application.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.supportsystem.application.domains.Ticket;
+import com.supportsystem.application.dtos.TicketDTO;
 
 public interface TicketService {
 	
 	List<Ticket> getAllTickets();
 
-	Optional<Ticket> getTicketById(Long id);
+	TicketDTO getTicketById(Long id);
 
 //	save(Ticket ticket);
 
