@@ -30,10 +30,10 @@ public class TicketController {
 
 	@RequestMapping(value = { "" }, method = RequestMethod.GET)
 	@Description(value = "returns all tickets")
-	public @ResponseBody ResponseEntity<List<Ticket>> getAllTickets() {
+	public @ResponseBody ResponseEntity<List<TicketDTO>> getAllTickets() {
 		logger.info("get all tickets");
-		List<Ticket> response = ticketService.getAllTickets();
-		return new ResponseEntity<List<Ticket>>(response, HttpStatus.OK);
+		List<TicketDTO> response = ticketService.getAllTickets();
+		return new ResponseEntity<List<TicketDTO>>(response, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "{id}", method = RequestMethod.GET)
