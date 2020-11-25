@@ -33,6 +33,7 @@ public class UserController {
 	public @ResponseBody ResponseEntity<List<UserDTO>> getAllUsers() {
 		logger.info("get all users");
 		List<UserDTO> response = userService.getAllUsers();
+		logger.info(userService.getAllUsers().toString());
 		return new ResponseEntity<List<UserDTO>>(response, HttpStatus.OK);
 	}
 
