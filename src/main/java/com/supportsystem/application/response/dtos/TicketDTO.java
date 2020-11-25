@@ -2,6 +2,8 @@ package com.supportsystem.application.response.dtos;
 
 import java.util.Date;
 
+import com.supportsystem.application.shared.Status;
+
 public class TicketDTO {
 
 	private Long id;
@@ -13,6 +15,8 @@ public class TicketDTO {
 	private Long modifiedBy;
 
 	private Date lastModified;
+	
+	private Status ticketStatus;
 
 	public Long getId() {
 		return id;
