@@ -1,4 +1,4 @@
-package com.supportsystem.application.dtos;
+package com.supportsystem.application.response.dtos;
 
 import java.util.Date;
 

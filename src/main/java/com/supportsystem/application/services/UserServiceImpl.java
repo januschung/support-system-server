@@ -7,9 +7,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.supportsystem.application.dtos.UserDTO;
+import com.supportsystem.application.domains.User;
 import com.supportsystem.application.exceptions.UserNotFoundException;
 import com.supportsystem.application.repositories.UserRepository;
+import com.supportsystem.application.response.dtos.UserDTO;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -31,6 +32,14 @@ public class UserServiceImpl implements UserService {
 		return userRepository.findById(id).map(user -> {
 			return modelMapper.map(user, UserDTO.class);
 		}).orElseThrow(() -> new UserNotFoundException(id));
+	}
+
+	@Override
+	public UserDTO save(com.supportsystem.application.request.dtos.UserDTO userDTO) {
+		User entity = modelMapper.map(userDTO, User.class);
+		entity.setCreatedBy(-1L);
+		userRepository.save(entity);
+		return modelMapper.map(entity, UserDTO.class);
 	}
 
 }
