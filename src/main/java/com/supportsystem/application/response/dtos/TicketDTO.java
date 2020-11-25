@@ -16,7 +16,7 @@ public class TicketDTO {
 
 	private Date lastModified;
 	
-	private Status ticketStatus;
+	private Status.Ticket status;
 
 	public Long getId() {
 		return id;
@@ -56,6 +56,14 @@ public class TicketDTO {
 
 	public void setLastModified(Date lastModified) {
 		this.lastModified = lastModified;
+	}
+
+	public Status.Ticket getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status.Ticket status) {
+		this.status = status;
 	}
 
 }
