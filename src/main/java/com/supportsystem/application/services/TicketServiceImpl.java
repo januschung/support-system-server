@@ -7,9 +7,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.supportsystem.application.dtos.TicketDTO;
+import com.supportsystem.application.domains.Ticket;
 import com.supportsystem.application.exceptions.TicketNotFoundException;
 import com.supportsystem.application.repositories.TicketRepository;
+import com.supportsystem.application.response.dtos.TicketDTO;
+import com.supportsystem.application.shared.Status;
 
 @Service
 public class TicketServiceImpl implements TicketService {
@@ -31,6 +33,16 @@ public class TicketServiceImpl implements TicketService {
 		return ticketRepository.findById(id).map(ticket -> {
 			return modelMapper.map(ticket, TicketDTO.class);
 		}).orElseThrow(() -> new TicketNotFoundException(id));
+	}
+
+	@Override
+	public TicketDTO save(com.supportsystem.application.request.dtos.TicketDTO ticketDTO) {
+		Ticket entity = modelMapper.map(ticketDTO, Ticket.class);
+		entity.setCreatedBy(-1L);
+		entity.setModifiedBy(-1L);
+		entity.setTicketStatus(Status.Ticket.NEW);
+		ticketRepository.save(entity);
+		return modelMapper.map(entity, TicketDTO.class);
 	}
 
 }

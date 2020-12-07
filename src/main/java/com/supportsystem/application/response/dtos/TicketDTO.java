@@ -1,6 +1,8 @@
-package com.supportsystem.application.dtos;
+package com.supportsystem.application.response.dtos;
 
 import java.util.Date;
+
+import com.supportsystem.application.shared.Status;
 
 public class TicketDTO {
 
@@ -13,6 +15,8 @@ public class TicketDTO {
 	private Long modifiedBy;
 
 	private Date lastModified;
+	
+	private Status.Ticket status;
 
 	public Long getId() {
 		return id;
@@ -52,6 +56,14 @@ public class TicketDTO {
 
 	public void setLastModified(Date lastModified) {
 		this.lastModified = lastModified;
+	}
+
+	public Status.Ticket getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status.Ticket status) {
+		this.status = status;
 	}
 
 }

@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.supportsystem.application.shared.Status;
+
 @Entity
 @Table(name = "TICKET")
 public class Ticket {
@@ -40,7 +42,7 @@ public class Ticket {
 	private String description;
 
 	@Column(name = "TICKET_STATUS_ID")
-	private Long ticketStatusId;
+	private Status.Ticket status;
 
 	@Column(name = "RESOLUTION_ID")
 	private Long resolutionId;
@@ -109,12 +111,12 @@ public class Ticket {
 		this.description = description;
 	}
 
-	public Long getTicketStatusId() {
-		return ticketStatusId;
+	public Status.Ticket getStatus() {
+		return status;
 	}
 
-	public void setTicketStatusId(Long ticketStatusId) {
-		this.ticketStatusId = ticketStatusId;
+	public void setTicketStatus(Status.Ticket status) {
+		this.status = status;
 	}
 
 	public Long getResolutionId() {

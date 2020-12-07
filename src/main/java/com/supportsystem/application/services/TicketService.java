@@ -2,7 +2,7 @@ package com.supportsystem.application.services;
 
 import java.util.List;
 
-import com.supportsystem.application.dtos.TicketDTO;
+import com.supportsystem.application.response.dtos.TicketDTO;
 
 public interface TicketService {
 	
@@ -10,6 +10,7 @@ public interface TicketService {
 
 	TicketDTO getTicketById(Long id);
 
-//	save(Ticket ticket);
+	TicketDTO save(com.supportsystem.application.request.dtos.TicketDTO ticket);
+
 
 }
