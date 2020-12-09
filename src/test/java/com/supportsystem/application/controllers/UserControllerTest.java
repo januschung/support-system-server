@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import com.supportsystem.application.dtos.UserDTO;
+import com.supportsystem.application.response.dtos.UserDTO;
 import com.supportsystem.application.services.UserService;
 
 @WebMvcTest(UserController.class)
@@ -26,11 +27,13 @@ class UserControllerTest {
 	private MockMvc mockMvc;
 	
 	@MockBean
-	private UserService userService;	
-
-	@Test
-	public void testGetUserByIdExistingUser() throws Exception {
-		UserDTO userDTO = new UserDTO();
+	private UserService userService;
+	
+	private static UserDTO userDTO;
+	
+	@BeforeAll
+	public static void init() {
+		userDTO = new UserDTO();
 		userDTO.setEmail("jare@jare.com");
 		userDTO.setFirstName("firstname");
 		userDTO.setLastName("lastname");
@@ -39,6 +42,10 @@ class UserControllerTest {
 		userDTO.setPhone("8008889999");
 		userDTO.setUsername("jare");
 		
+	}
+
+	@Test
+	public void testGetUserByIdExistingUser() throws Exception {
 		
 		when(userService.getUserById(anyLong())).thenReturn(userDTO);
 		

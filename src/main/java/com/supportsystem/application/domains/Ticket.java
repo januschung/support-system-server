@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,11 +43,13 @@ public class Ticket {
 	@Column(name = "DESCRIPTION")
 	private String description;
 
-	@Column(name = "TICKET_STATUS_ID")
+	@Column(name = "STATUS")
+	@Enumerated(EnumType.STRING)
 	private Status.Ticket status;
 
-	@Column(name = "RESOLUTION_ID")
-	private Long resolutionId;
+	@Column(name = "RESOLUTION")
+	@Enumerated(EnumType.STRING)
+	private Status.Resolution resolution;
 
 	public Long getId() {
 		return id;
@@ -119,12 +123,12 @@ public class Ticket {
 		this.status = status;
 	}
 
-	public Long getResolutionId() {
-		return resolutionId;
+	public Status.Resolution getResolution() {
+		return resolution;
 	}
 
-	public void setResolutionId(Long resolutionId) {
-		this.resolutionId = resolutionId;
+	public void setResolution(Status.Resolution resolution) {
+		this.resolution = resolution;
 	}
 
 }
