@@ -73,8 +73,7 @@ class UserControllerTest {
 		RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/users/999").accept(MediaType.APPLICATION_JSON);
 		mockMvc.perform(requestBuilder).andDo(print())
 		.andExpect(status().isNotFound());
-		verify(userService, times(1)).getUserById(999L);
-//		
+		verify(userService, times(1)).getUserById(999L);	
 		
 	}
 
