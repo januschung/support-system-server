@@ -23,7 +23,7 @@ import com.supportsystem.application.services.UserService;
 import ch.qos.logback.classic.Logger;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
 
 	protected Logger logger = (Logger) LoggerFactory.getLogger(UserController.class);

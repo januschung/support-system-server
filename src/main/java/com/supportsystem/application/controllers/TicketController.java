@@ -23,7 +23,7 @@ import com.supportsystem.application.services.TicketService;
 import ch.qos.logback.classic.Logger;
 
 @RestController
-@RequestMapping("/tickets")
+@RequestMapping("/api/tickets")
 public class TicketController {
 
 	protected Logger logger = (Logger) LoggerFactory.getLogger(TicketController.class);
