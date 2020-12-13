@@ -4,6 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -17,8 +21,10 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import com.supportsystem.application.exceptions.TicketNotFoundException;
 import com.supportsystem.application.response.dtos.UserDTO;
 import com.supportsystem.application.services.UserService;
+import com.supportsystem.application.shared.Status;
 
 @WebMvcTest(UserController.class)
 class UserControllerTest {
@@ -57,6 +63,18 @@ class UserControllerTest {
 		
 		String expected = "{id:1,username:jare,email:jare@jare.com,firstName:firstname,lastName:lastname,phone:'8008889999',enabledFl:true}";
 		JSONAssert.assertEquals(expected, result.getResponse().getContentAsString(), false);
+	}
+	
+	@Test
+	public void testGetUserByIdNonExistingUser() throws Exception {
+		
+		when(userService.getUserById(anyLong())).thenThrow(new TicketNotFoundException(999L));
+		
+		RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/users/999").accept(MediaType.APPLICATION_JSON);
+		mockMvc.perform(requestBuilder).andDo(print())
+		.andExpect(status().isNotFound());
+		verify(userService, times(1)).getUserById(999L);	
+		
 	}
 
 }
