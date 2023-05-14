@@ -16,7 +16,18 @@ public class TicketDTO {
 	
 	private Long clientId;
 
-	public Long getCreatedBy() {
+	public TicketDTO(Long createdBy, Long modifiedBy, Date lastModified, String description, Long assigneeId,
+            Long clientId) {
+        super();
+        this.createdBy = createdBy;
+        this.modifiedBy = modifiedBy;
+        this.lastModified = lastModified;
+        this.description = description;
+        this.assigneeId = assigneeId;
+        this.clientId = clientId;
+    }
+
+    public Long getCreatedBy() {
 		return createdBy;
 	}
 
