@@ -17,18 +17,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.supportsystem.application.response.dtos.UserDTO;
-import com.supportsystem.application.services.UserService;
+import com.supportsystem.application.services.AppUserService;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
 @RequestMapping("/users")
-public class UserController {
+public class AppUserController {
 
 
 	@Autowired
-	private UserService userService;
+	private AppUserService userService;
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@Description(value = "returns all users")

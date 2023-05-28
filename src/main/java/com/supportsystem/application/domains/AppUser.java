@@ -10,15 +10,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "USER")
-public class User {
+@Table(name = "APP_USER")
+public class AppUser {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID")
 	private Long id;
 
-	@Column(name = "CREATED_ON")
+	@Column(name = "CREATED_ON", insertable = false)
 	private Date createdOn;
 
 	@Column(name = "CREATED_BY")
@@ -27,7 +27,7 @@ public class User {
 	@Column(name = "MODIFIED_BY")
 	private Long modifiedBy;
 
-	@Column(name = "LAST_MODIFIED")
+	@Column(name = "LAST_MODIFIED", insertable = false)
 	private Date lastModified;
 
 	@Column(name = "USERNAME")

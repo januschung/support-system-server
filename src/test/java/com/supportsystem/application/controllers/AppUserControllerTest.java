@@ -23,17 +23,17 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.supportsystem.application.exceptions.TicketNotFoundException;
 import com.supportsystem.application.response.dtos.UserDTO;
-import com.supportsystem.application.services.UserService;
+import com.supportsystem.application.services.AppUserService;
 import com.supportsystem.application.shared.Status;
 
-@WebMvcTest(UserController.class)
-class UserControllerTest {
+@WebMvcTest(AppUserController.class)
+class AppUserControllerTest {
 	
 	@Autowired
 	private MockMvc mockMvc;
 	
 	@MockBean
-	private UserService userService;
+	private AppUserService userService;
 	
 	private static UserDTO userDTO;
 	
