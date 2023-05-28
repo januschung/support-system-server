@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.supportsystem.application.response.dtos.UserDTO;
 
-public interface UserService {
+public interface AppUserService {
 	
 	List<UserDTO> getAllUsers();
 

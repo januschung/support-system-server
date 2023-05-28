@@ -2,15 +2,15 @@ package com.supportsystem.application.services;
 
 import java.util.List;
 
-import com.supportsystem.application.response.dtos.TicketDTO;
+import com.supportsystem.application.response.dtos.TicketResponseDTO;
 
 public interface TicketService {
 	
-	List<TicketDTO> getAllTickets();
+	List<TicketResponseDTO> getAllTickets();
 
-	TicketDTO getTicketById(Long id);
+	TicketResponseDTO getTicketById(Long id);
 
-	TicketDTO save(com.supportsystem.application.request.dtos.TicketDTO ticket);
+	TicketResponseDTO save(TicketResponseDTO ticket);
 
 
 }
