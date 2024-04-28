@@ -2,14 +2,15 @@ package com.supportsystem.application.services;
 
 import java.util.List;
 
-import com.supportsystem.application.response.dtos.UserDTO;
+import com.supportsystem.application.request.dtos.UserRequestDTO;
+import com.supportsystem.application.response.dtos.UserResponseDTO;
 
 public interface AppUserService {
 	
-	List<UserDTO> getAllUsers();
+	List<UserResponseDTO> getAllUsers();
 
-	UserDTO getUserById(Long id);
+	UserResponseDTO getUserById(Long id);
 
-	UserDTO save(com.supportsystem.application.request.dtos.UserDTO userDTO);
+	UserResponseDTO save(UserRequestDTO userRequestDTO);
 
 }

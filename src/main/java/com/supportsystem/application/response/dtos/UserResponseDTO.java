@@ -5,7 +5,7 @@ import java.util.Date;
 import lombok.Data;
 
 @Data
-public class UserDTO {
+public class UserResponseDTO {
 
 	private Long id;
 
