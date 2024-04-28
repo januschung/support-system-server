@@ -30,38 +30,31 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/tickets")
 public class TicketController {
 
-	@Autowired
-	private TicketService ticketService;
+    @Autowired
+    private TicketService ticketService;
 
-	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	@Description(value = "returns all tickets")
-	public @ResponseBody ResponseEntity<List<TicketResponseDTO>> getAllTickets() {
-		log.info("get all tickets");
-		List<TicketResponseDTO> response = ticketService.getAllTickets();
-		return new ResponseEntity<List<TicketResponseDTO>>(response, HttpStatus.OK);
-	}
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @Description(value = "returns all tickets")
+    public @ResponseBody ResponseEntity<List<TicketResponseDTO>> getAllTickets() {
+        log.info("get all tickets");
+        List<TicketResponseDTO> response = ticketService.getAllTickets();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
-	@GetMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	@Description(value = "returns a ticket by Id")
-	public @ResponseBody ResponseEntity<TicketResponseDTO> getTicketById(@PathVariable Long id) {
-		log.info("get a ticket by Id");
-		TicketResponseDTO response = ticketService.getTicketById(id);
-		return new ResponseEntity<TicketResponseDTO>(response, HttpStatus.OK);
-	}
+    @GetMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Description(value = "returns a ticket by Id")
+    public @ResponseBody ResponseEntity<TicketResponseDTO> getTicketById(@PathVariable Long id) {
+        log.info("get a ticket by Id");
+        TicketResponseDTO response = ticketService.getTicketById(id);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
-	@PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE })
-	@Description(value = "save a new ticket")
-	public @ResponseBody ResponseEntity<TicketResponseDTO> saveTicket(@RequestBody final TicketRequestDTO ticket) {
-		log.info("save a new ticket", ticket);
-		// ticket.setModifiedBy(-1L);
-		// ticket.setClientId(-1L);
-		// ticket.setAssigneeId(-1L);
-		// ticket.setCreatedBy(-1L);
-		// ticket.setDescription(ticket.getDescription());
-		// ticket.setStatus(Status.Ticket.OPEN);
-		// ticket.setResolution(Resolution.UNRESOLVED);
-		TicketResponseDTO response = ticketService.save(ticket);
-		return new ResponseEntity<TicketResponseDTO>(response, HttpStatus.OK);
-	}
+    @PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE })
+    @Description(value = "save a new ticket")
+    public @ResponseBody ResponseEntity<TicketResponseDTO> saveTicket(@RequestBody final TicketRequestDTO ticket) {
+        log.info("save a new ticket", ticket);
+        TicketResponseDTO response = ticketService.save(ticket);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
 }

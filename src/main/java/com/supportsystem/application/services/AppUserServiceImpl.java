@@ -3,6 +3,7 @@ package com.supportsystem.application.services;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.supportsystem.application.request.dtos.UserRequestDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.supportsystem.application.domains.AppUser;
 import com.supportsystem.application.exceptions.UserNotFoundException;
 import com.supportsystem.application.repositories.AppUserRepository;
-import com.supportsystem.application.response.dtos.UserDTO;
+import com.supportsystem.application.response.dtos.UserResponseDTO;
 
 @Service
 public class AppUserServiceImpl implements AppUserService {
@@ -21,25 +22,25 @@ public class AppUserServiceImpl implements AppUserService {
 	private ModelMapper modelMapper = new ModelMapper();
 
 	@Override
-	public List<UserDTO> getAllUsers() {
+	public List<UserResponseDTO> getAllUsers() {
 		return userRepository.findAll().stream().map(user -> {
-			return modelMapper.map(user, UserDTO.class);
+			return modelMapper.map(user, UserResponseDTO.class);
 		}).collect(Collectors.toList());
 	}
 
 	@Override
-	public UserDTO getUserById(Long id) {
+	public UserResponseDTO getUserById(Long id) {
 		return userRepository.findById(id).map(user -> {
-			return modelMapper.map(user, UserDTO.class);
+			return modelMapper.map(user, UserResponseDTO.class);
 		}).orElseThrow(() -> new UserNotFoundException(id));
 	}
 
 	@Override
-	public UserDTO save(com.supportsystem.application.request.dtos.UserDTO userDTO) {
-		AppUser entity = modelMapper.map(userDTO, AppUser.class);
+	public UserResponseDTO save(UserRequestDTO userRequestDTO) {
+		AppUser entity = modelMapper.map(userRequestDTO, AppUser.class);
 		entity.setCreatedBy(-1L);
 		userRepository.save(entity);
-		return modelMapper.map(entity, UserDTO.class);
+		return modelMapper.map(entity, UserResponseDTO.class);
 	}
 
 }
