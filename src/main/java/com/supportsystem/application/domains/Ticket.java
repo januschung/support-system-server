@@ -10,10 +10,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import com.supportsystem.application.shared.Status;
 
 @Entity
+@Getter @Setter @NoArgsConstructor
 @Table(name = "TICKET")
 public class Ticket {
 
@@ -50,85 +54,5 @@ public class Ticket {
 	@Column(name = "RESOLUTION")
 	@Enumerated(EnumType.STRING)
 	private Status.Resolution resolution;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Date getCreatedOn() {
-		return createdOn;
-	}
-
-	public void setCreatedOn(Date createdOn) {
-		this.createdOn = createdOn;
-	}
-
-	public Long getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(Long createdBy) {
-		this.createdBy = createdBy;
-	}
-
-	public Long getModifiedBy() {
-		return modifiedBy;
-	}
-
-	public void setModifiedBy(Long modifiedBy) {
-		this.modifiedBy = modifiedBy;
-	}
-
-	public Date getLastModified() {
-		return lastModified;
-	}
-
-	public void setLastModified(Date lastModified) {
-		this.lastModified = lastModified;
-	}
-
-	public Long getAssigneeId() {
-		return assigneeId;
-	}
-
-	public void setAssigneeId(Long assigneeId) {
-		this.assigneeId = assigneeId;
-	}
-
-	public Long getClientId() {
-		return clientId;
-	}
-
-	public void setClientId(Long clientId) {
-		this.clientId = clientId;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public Status.Ticket getStatus() {
-		return status;
-	}
-
-	public void setTicketStatus(Status.Ticket status) {
-		this.status = status;
-	}
-
-	public Status.Resolution getResolution() {
-		return resolution;
-	}
-
-	public void setResolution(Status.Resolution resolution) {
-		this.resolution = resolution;
-	}
 
 }
