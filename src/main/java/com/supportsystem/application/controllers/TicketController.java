@@ -1,6 +1,5 @@
 package com.supportsystem.application.controllers;
 
-
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.supportsystem.application.response.dtos.TicketResponseDTO;
+import com.supportsystem.application.request.dtos.TicketRequestDTO;
 import com.supportsystem.application.services.TicketService;
 import com.supportsystem.application.shared.Status;
 import com.supportsystem.application.shared.Status.Resolution;
@@ -50,20 +50,18 @@ public class TicketController {
 	}
 
 	@PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE })
-    @Description(value = "save a new ticket")
-    public
-    @ResponseBody
-    ResponseEntity<TicketResponseDTO> save(@RequestBody final TicketResponseDTO ticket) {
-        log.info("save a new ticket", ticket);
-        ticket.setModifiedBy(-1L);
-        ticket.setClientId(-1L);
-        ticket.setAssigneeId(-1L);
-        ticket.setCreatedBy(-1L);
-        ticket.setDescription(ticket.getDescription());
-        ticket.setStatus(Status.Ticket.OPEN);
-        ticket.setResolution(Resolution.UNRESOLVED);
-        TicketResponseDTO response = ticketService.save(ticket);
-        return new ResponseEntity<TicketResponseDTO>(response, HttpStatus.OK);
-    }
-    
+	@Description(value = "save a new ticket")
+	public @ResponseBody ResponseEntity<TicketResponseDTO> saveTicket(@RequestBody final TicketRequestDTO ticket) {
+		log.info("save a new ticket", ticket);
+		// ticket.setModifiedBy(-1L);
+		// ticket.setClientId(-1L);
+		// ticket.setAssigneeId(-1L);
+		// ticket.setCreatedBy(-1L);
+		// ticket.setDescription(ticket.getDescription());
+		// ticket.setStatus(Status.Ticket.OPEN);
+		// ticket.setResolution(Resolution.UNRESOLVED);
+		TicketResponseDTO response = ticketService.save(ticket);
+		return new ResponseEntity<TicketResponseDTO>(response, HttpStatus.OK);
+	}
+
 }

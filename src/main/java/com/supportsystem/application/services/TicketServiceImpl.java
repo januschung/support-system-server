@@ -11,6 +11,7 @@ import com.supportsystem.application.domains.Ticket;
 import com.supportsystem.application.exceptions.TicketNotFoundException;
 import com.supportsystem.application.repositories.TicketRepository;
 import com.supportsystem.application.response.dtos.TicketResponseDTO;
+import com.supportsystem.application.request.dtos.TicketRequestDTO;
 
 @Service
 public class TicketServiceImpl implements TicketService {
@@ -35,8 +36,9 @@ public class TicketServiceImpl implements TicketService {
 	}
 
 	@Override
-	public TicketResponseDTO save(TicketResponseDTO ticketDTO) {
-		Ticket entity = modelMapper.map(ticketDTO, Ticket.class);
+	public TicketResponseDTO save(TicketRequestDTO ticketRequestDTO) {
+		Ticket entity = modelMapper.map(ticketRequestDTO, Ticket.class);
+		entity.setCreatedBy(-1L);
 		ticketRepository.save(entity);
 		return modelMapper.map(entity, TicketResponseDTO.class);
 	}
