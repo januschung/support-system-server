@@ -10,14 +10,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
 import com.supportsystem.application.shared.Status;
 
 @Entity
-@Getter @Setter @NoArgsConstructor
+@Data
 @Table(name = "TICKET")
 public class Ticket {
 

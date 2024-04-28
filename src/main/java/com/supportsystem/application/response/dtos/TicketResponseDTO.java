@@ -7,7 +7,6 @@ import com.supportsystem.application.shared.Status.Resolution;
 
 import lombok.Data;
 
-
 @Data
 public class TicketResponseDTO {
 
@@ -20,15 +19,15 @@ public class TicketResponseDTO {
 	private Long modifiedBy;
 
 	private Date lastModified;
-	
-    private Long assigneeId;
-    
-    private Long clientId;
-    
-    private String description;
-	
+
+	private Long assigneeId;
+
+	private Long clientId;
+
+	private String description;
+
 	private Status.Ticket status;
-	
+
 	private Status.Resolution resolution;
 
 }
