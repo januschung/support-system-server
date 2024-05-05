@@ -1,6 +1,8 @@
 package com.supportsystem.application.domains;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,12 +10,16 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.Data;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.CascadeType;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "APP_USER")
-public class AppUser {
+public class AppUser implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,5 +61,8 @@ public class AppUser {
 	
 	@Column(name = "LAST_LOGIN")
 	private Date lastLogin;
+
+	@OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL)
+	private List<Ticket> tickets;
 
 }
