@@ -1,10 +1,14 @@
 package com.supportsystem.application.services;
 
 import com.supportsystem.application.domains.AppUser;
+import com.supportsystem.application.domains.Ticket;
 import com.supportsystem.application.exceptions.UserNotFoundException;
 import com.supportsystem.application.repositories.AppUserRepository;
+import com.supportsystem.application.repositories.TicketRepository;
 import com.supportsystem.application.request.dtos.UserRequestDTO;
+import com.supportsystem.application.response.dtos.TicketResponseDTO;
 import com.supportsystem.application.response.dtos.UserResponseDTO;
+import com.supportsystem.application.shared.Status;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,23 +18,24 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static java.util.Arrays.asList;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceImplTest {
 
-	private static AppUser appUser1 = new AppUser();
-	private static AppUser appUser2 = new AppUser();
-	
+	private static AppUser appUser1;
+	private static AppUser appUser2;
+	private static Ticket ticket1;
+	private static Ticket ticket2;
+
 	@BeforeAll
 	public static void init() {
+		appUser1 = new AppUser();
 		appUser1.setId(1L);
 		appUser1.setCreatedBy(1L);
 		appUser1.setModifiedBy(1L);
@@ -43,6 +48,7 @@ public class UserServiceImplTest {
 		appUser1.setCreatedOn(new Date());
 		appUser1.setLastModified(new Date());
 
+		appUser2 = new AppUser();
 		appUser2.setId(2L);
 		appUser2.setCreatedBy(1L);
 		appUser2.setModifiedBy(1L);
@@ -54,40 +60,68 @@ public class UserServiceImplTest {
 		appUser2.setUsername("bazbar");
 		appUser2.setCreatedOn(new Date());
 		appUser2.setLastModified(new Date());
+
+		ticket1 = new Ticket(appUser1);
+		ticket1.setId(1L);
+		ticket1.setCreatedBy(1L);
+		ticket1.setModifiedBy(1L);
+		ticket1.setDescription("whatever 1");
+		ticket1.setStatus(Status.Ticket.NEW);
+		ticket1.setAssigneeId(1L);
+		ticket1.setClientId(1L);
+		ticket1.setResolution(Status.Resolution.UNRESOLVED);
+		ticket1.setCreatedOn(new Date());
+		ticket1.setLastModified(new Date());
+
+		ticket2 = new Ticket(appUser1);
+		ticket2.setId(2L);
+		ticket2.setCreatedBy(2L);
+		ticket2.setModifiedBy(2L);
+		ticket2.setDescription("whatever 2");
+		ticket2.setStatus(Status.Ticket.NEW);
+		ticket2.setAssigneeId(1L);
+		ticket2.setClientId(2L);
+		ticket2.setResolution(Status.Resolution.RESOLVED);
+		ticket2.setCreatedOn(new Date());
+		ticket2.setLastModified(new Date());
 	}
 
 	@Mock
 	@Autowired
-	private AppUserRepository AppUserRepository;
+	private AppUserRepository appUserRepository;
+
+	@Mock
+	@Autowired
+	private TicketRepository ticketRepository;
 
 	@Mock
 	private ModelMapper modelMapper;
 
 	@InjectMocks
-	private AppUserServiceImpl AppUserService;
+	private AppUserServiceImpl appUserService;
 
 	@Test
 	public void testGetAllUsers() {
-		List<AppUser> AppUsers = Arrays.asList(appUser1, appUser2);
-		when(AppUserRepository.findAll()).thenReturn(AppUsers);
+		List<AppUser> AppUsers = asList(appUser1, appUser2);
+		when(appUserRepository.findAll()).thenReturn(AppUsers);
 
-		List<UserResponseDTO> responseDTOs = AppUserService.getAllUsers();
+		List<UserResponseDTO> responseDTOs = appUserService.getAllUsers();
 		assertEquals(AppUsers.size(), responseDTOs.size());
 	}
 
 	@Test
 	public void testGetUserByIdExist() {
-		when(AppUserRepository.findById(1L)).thenReturn(Optional.of(appUser1));
+		when(appUserRepository.findById(1L)).thenReturn(Optional.of(appUser1));
 		when(modelMapper.map(appUser1, UserResponseDTO.class)).thenReturn(new UserResponseDTO());
 
-		UserResponseDTO responseDTO = AppUserService.getUserById(1L);
+		UserResponseDTO responseDTO = appUserService.getUserById(1L);
 		assertEquals(UserResponseDTO.class, responseDTO.getClass());
 	}
 
 	@Test
 	public void testGetUserByIdNotExist() {
-		when(AppUserRepository.findById(999L)).thenReturn(Optional.empty());
-		assertThrows(UserNotFoundException.class, () -> AppUserService.getUserById(999L));
+		when(appUserRepository.findById(999L)).thenReturn(Optional.empty());
+		assertThrows(UserNotFoundException.class, () -> appUserService.getUserById(999L));
 	}
 
 	@Test
@@ -98,11 +132,35 @@ public class UserServiceImplTest {
 		when(modelMapper.map(requestDTO, AppUser.class)).thenReturn(appUser1);
 		when(modelMapper.map(appUser1, UserResponseDTO.class)).thenReturn(responseDTO);
 
-		UserResponseDTO savedDTO = AppUserService.save(requestDTO);
+		UserResponseDTO savedDTO = appUserService.save(requestDTO);
 
 		assertEquals(responseDTO, savedDTO);
 		verify(modelMapper).map(requestDTO, AppUser.class);
 		verify(modelMapper).map(appUser1, UserResponseDTO.class);
-		verify(AppUserRepository).save(appUser1);
+		verify(appUserRepository).save(appUser1);
+	}
+
+	@Test
+	public void testGetUserWithTickets() {
+		appUser1.setTickets(asList(ticket1, ticket2));
+
+		when(appUserRepository.findById(1L)).thenReturn(Optional.of(appUser1));
+		when(ticketRepository.findByAppUser(appUser1)).thenReturn(asList(ticket1, ticket2));
+
+		UserResponseDTO responseDTO = new UserResponseDTO();
+		when(modelMapper.map(appUser1, UserResponseDTO.class)).thenReturn(responseDTO);
+
+		when(modelMapper.map(appUser1, UserResponseDTO.class)).thenReturn(responseDTO);
+
+		UserResponseDTO userDTO = appUserService.getUserWithTickets(1L);
+
+		assertNotNull(userDTO);
+		System.out.println(ticket1);
+		System.out.println("999999999");
+
+		assertEquals(2, userDTO.getTickets().size());
+		assertEquals("whatever 1", userDTO.getTickets().get(0).getDescription());
+		assertEquals("whatever 2", userDTO.getTickets().get(1).getDescription());
+
 	}
 }

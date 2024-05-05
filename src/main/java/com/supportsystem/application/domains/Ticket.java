@@ -1,5 +1,6 @@
 package com.supportsystem.application.domains;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import jakarta.persistence.Column;
@@ -10,14 +11,20 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.Data;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
 
 import com.supportsystem.application.shared.Status;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 @Table(name = "TICKET")
-public class Ticket {
+public class Ticket implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,4 +60,28 @@ public class Ticket {
 	@Enumerated(EnumType.STRING)
 	private Status.Resolution resolution;
 
+	@ManyToOne
+	@JoinColumn(name = "assigneeId")
+	private AppUser appUser;
+
+	public Ticket(AppUser appUser) {
+		this.appUser = appUser;
+	}
+
+	@Override
+	public String toString() {
+		return "Ticket{" +
+			"id=" + id +
+			", createdOn=" + createdOn +
+			", createdBy=" + createdBy +
+			", modifiedBy=" + modifiedBy +
+			", lastModified=" + lastModified +
+			", assigneeId=" + assigneeId +
+			", clientId=" + clientId +
+			", description='" + description + '\'' +
+			", status=" + status +
+			", resolution=" + resolution +
+			", appUser=" + appUser.getId() +
+			'}';
+	}
 }

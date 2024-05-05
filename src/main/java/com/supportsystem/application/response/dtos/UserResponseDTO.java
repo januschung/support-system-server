@@ -1,7 +1,9 @@
 package com.supportsystem.application.response.dtos;
 
 import java.util.Date;
+import java.util.List;
 
+import com.supportsystem.application.domains.Ticket;
 import lombok.Data;
 
 @Data
@@ -22,5 +24,7 @@ public class UserResponseDTO {
 	private boolean enabledFl;
 
 	private Date lastLogin;
+
+	private List<Ticket> tickets;
 
 }
