@@ -6,7 +6,6 @@ import com.supportsystem.application.exceptions.UserNotFoundException;
 import com.supportsystem.application.repositories.AppUserRepository;
 import com.supportsystem.application.repositories.TicketRepository;
 import com.supportsystem.application.request.dtos.UserRequestDTO;
-import com.supportsystem.application.response.dtos.TicketResponseDTO;
 import com.supportsystem.application.response.dtos.UserResponseDTO;
 import com.supportsystem.application.shared.Status;
 import org.junit.jupiter.api.BeforeAll;
@@ -19,7 +18,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,55 +33,59 @@ public class UserServiceImplTest {
 
 	@BeforeAll
 	public static void init() {
-		appUser1 = new AppUser();
-		appUser1.setId(1L);
-		appUser1.setCreatedBy(1L);
-		appUser1.setModifiedBy(1L);
-		appUser1.setEmail("whatever");
-		appUser1.setFirstName("foo");
-		appUser1.setLastName("bar");
-		appUser1.setEnabledFl(true);
-		appUser1.setPhone("8008889999");
-		appUser1.setUsername("foobar");
-		appUser1.setCreatedOn(new Date());
-		appUser1.setLastModified(new Date());
+		appUser1 = AppUser.builder()
+			.id(1L)
+			.createdBy(1L)
+			.modifiedBy(1L)
+			.email("whatever")
+			.firstName("foo")
+			.lastName("bar")
+			.enabledFl(true)
+			.phone("8008889999")
+			.username("foobar")
+			.createdOn(new Date())
+			.lastModified(new Date())
+			.build();
 
-		appUser2 = new AppUser();
-		appUser2.setId(2L);
-		appUser2.setCreatedBy(1L);
-		appUser2.setModifiedBy(1L);
-		appUser2.setEmail("whatever");
-		appUser2.setFirstName("baz");
-		appUser2.setLastName("bar");
-		appUser2.setEnabledFl(true);
-		appUser2.setPhone("8008880000");
-		appUser2.setUsername("bazbar");
-		appUser2.setCreatedOn(new Date());
-		appUser2.setLastModified(new Date());
+		appUser2 = AppUser.builder()
+			.id(2L)
+			.createdBy(1L)
+			.modifiedBy(1L)
+			.email("whatever")
+			.firstName("baz")
+			.lastName("bar")
+			.enabledFl(true)
+			.phone("8008880000")
+			.username("bazbar")
+			.createdOn(new Date())
+			.lastModified(new Date())
+			.build();
 
-		ticket1 = new Ticket(appUser1);
-		ticket1.setId(1L);
-		ticket1.setCreatedBy(1L);
-		ticket1.setModifiedBy(1L);
-		ticket1.setDescription("whatever 1");
-		ticket1.setStatus(Status.Ticket.NEW);
-		ticket1.setAssigneeId(1L);
-		ticket1.setClientId(1L);
-		ticket1.setResolution(Status.Resolution.UNRESOLVED);
-		ticket1.setCreatedOn(new Date());
-		ticket1.setLastModified(new Date());
+		ticket1 = Ticket.builder()
+			.id(1L)
+			.createdBy(1L)
+			.modifiedBy(1L)
+			.description("whatever 1")
+			.status(Status.Ticket.NEW)
+			.assigneeId(1L)
+			.clientId(1L)
+			.resolution(Status.Resolution.UNRESOLVED)
+			.createdOn(new Date())
+			.lastModified(new Date())
+			.build();
 
-		ticket2 = new Ticket(appUser1);
-		ticket2.setId(2L);
-		ticket2.setCreatedBy(2L);
-		ticket2.setModifiedBy(2L);
-		ticket2.setDescription("whatever 2");
-		ticket2.setStatus(Status.Ticket.NEW);
-		ticket2.setAssigneeId(1L);
-		ticket2.setClientId(2L);
-		ticket2.setResolution(Status.Resolution.RESOLVED);
-		ticket2.setCreatedOn(new Date());
-		ticket2.setLastModified(new Date());
+		ticket2 = Ticket.builder()
+			.id(2L)
+			.createdBy(1L)
+			.modifiedBy(1L)
+			.description("whatever 2")
+			.status(Status.Ticket.NEW)
+			.assigneeId(1L)
+			.clientId(2L)
+			.resolution(Status.Resolution.UNRESOLVED)
+			.createdOn(new Date())
+			.lastModified(new Date())
+			.build();
 	}
 
 	@Mock
@@ -150,14 +152,9 @@ public class UserServiceImplTest {
 		UserResponseDTO responseDTO = new UserResponseDTO();
 		when(modelMapper.map(appUser1, UserResponseDTO.class)).thenReturn(responseDTO);
 
-		when(modelMapper.map(appUser1, UserResponseDTO.class)).thenReturn(responseDTO);
-
 		UserResponseDTO userDTO = appUserService.getUserWithTickets(1L);
 
 		assertNotNull(userDTO);
-		System.out.println(ticket1);
-		System.out.println("999999999");
-
 		assertEquals(2, userDTO.getTickets().size());
 		assertEquals("whatever 1", userDTO.getTickets().get(0).getDescription());
 		assertEquals("whatever 2", userDTO.getTickets().get(1).getDescription());
