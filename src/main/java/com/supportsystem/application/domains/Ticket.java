@@ -3,14 +3,7 @@ package com.supportsystem.application.domains;
 import java.io.Serializable;
 import java.util.Date;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import com.supportsystem.application.shared.Status;
 import lombok.Data;
@@ -61,5 +54,9 @@ public class Ticket implements Serializable {
 	@Column(name = "RESOLUTION")
 	@Enumerated(EnumType.STRING)
 	private Status.Resolution resolution;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "APPUSER_ID")
+    private AppUser appUser;
 
 }

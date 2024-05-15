@@ -4,14 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.CascadeType;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -68,7 +61,7 @@ public class AppUser implements Serializable {
 	@Column(name = "LAST_LOGIN")
 	private Date lastLogin;
 
-	@OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL)
-	private List<Ticket> tickets;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "appUser", cascade = CascadeType.ALL)
+    private List<Ticket> tickets;
 
 }
