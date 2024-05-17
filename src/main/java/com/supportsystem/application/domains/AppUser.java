@@ -16,7 +16,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString(exclude = "tickets")
+@ToString
 @Table(name = "app_user")
 public class AppUser implements Serializable {
 

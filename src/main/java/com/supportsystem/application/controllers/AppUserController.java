@@ -51,7 +51,6 @@ public class AppUserController {
     @Description(value = "save a new user")
     public @ResponseBody ResponseEntity<UserResponseDTO> saveUser(
         @RequestBody UserRequestDTO userRequestDTO) {
-//        log.info("save a new user", value("body", userDTO));
         log.info("save a new user", userRequestDTO);
         UserResponseDTO response = userService.save(userRequestDTO);
         return new ResponseEntity<UserResponseDTO>(response, HttpStatus.OK);

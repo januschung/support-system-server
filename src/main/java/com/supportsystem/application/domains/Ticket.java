@@ -17,13 +17,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-//@ToString(exclude = "appUser")
+@ToString
 public class Ticket implements Serializable {
-
-	@Override
-	public String toString() {
-		return "Ticket{}";
-	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,9 +49,5 @@ public class Ticket implements Serializable {
 
 	@Enumerated(EnumType.STRING)
 	private Status.Resolution resolution;
-
-//    @ManyToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "assignee_id")
-//    private AppUser appUser;
 
 }

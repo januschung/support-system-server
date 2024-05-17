@@ -44,7 +44,7 @@ public class TicketController {
     @GetMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Description(value = "returns a ticket by Id")
     public @ResponseBody ResponseEntity<TicketResponseDTO> getTicketById(@PathVariable Long id) {
-        log.info("get a ticket by Id");
+        log.info("get a ticket by Id " + id);
         TicketResponseDTO response = ticketService.getTicketById(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -52,7 +52,7 @@ public class TicketController {
     @PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE })
     @Description(value = "save a new ticket")
     public @ResponseBody ResponseEntity<TicketResponseDTO> saveTicket(@RequestBody final TicketRequestDTO ticket) {
-        log.info("save a new ticket", ticket);
+        log.info("save a new ticket " + ticket);
         TicketResponseDTO response = ticketService.save(ticket);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
