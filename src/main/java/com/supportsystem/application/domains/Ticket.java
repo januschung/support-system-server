@@ -17,46 +17,46 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
-@Table(name = "TICKET")
+//@ToString(exclude = "appUser")
 public class Ticket implements Serializable {
+
+	@Override
+	public String toString() {
+		return "Ticket{}";
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ID")
 	private Long id;
 
-	@Column(name = "CREATED_ON", insertable = false)
+	@Column(name = "created_on", insertable = false)
 	private Date createdOn;
 
-	@Column(name = "CREATED_BY")
+	@Column(name = "created_by")
 	private Long createdBy;
 
-	@Column(name = "MODIFIED_BY")
+	@Column(name = "modified_by")
 	private Long modifiedBy;
 
-	@Column(name = "LAST_MODIFIED", insertable = false)
+	@Column(name = "last_modified", insertable = false)
 	private Date lastModified;
 
-	@Column(name = "ASSIGNEE_ID")
+	@Column(name = "assignee_id", insertable=false, updatable=false)
 	private Long assigneeId;
 
-	@Column(name = "CLIENT_ID")
+	@Column(name = "client_id")
 	private Long clientId;
 
-	@Column(name = "DESCRIPTION")
 	private String description;
 
-	@Column(name = "STATUS")
 	@Enumerated(EnumType.STRING)
 	private Status.Ticket status;
 
-	@Column(name = "RESOLUTION")
 	@Enumerated(EnumType.STRING)
 	private Status.Resolution resolution;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "APPUSER_ID")
-    private AppUser appUser;
+//    @ManyToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "assignee_id")
+//    private AppUser appUser;
 
 }

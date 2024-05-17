@@ -41,16 +41,16 @@ public class AppUserServiceImpl implements AppUserService {
 		}).orElseThrow(() -> new UserNotFoundException(id));
 	}
 
-	public UserResponseDTO getUserWithTickets(Long userId) {
-		AppUser appUser = userRepository.findById(userId)
-			.orElseThrow(() -> new UserNotFoundException(userId));
-
-		List<Ticket> tickets = ticketRepository.findByAppUser(appUser);
-		UserResponseDTO appUserDTO = modelMapper.map(appUser, UserResponseDTO.class);
-		appUserDTO.setTickets(tickets);
-
-		return appUserDTO;
-	}
+//	public UserResponseDTO getUserWithTickets(Long userId) {
+//		AppUser appUser = userRepository.findById(userId)
+//			.orElseThrow(() -> new UserNotFoundException(userId));
+//
+//		List<Ticket> tickets = ticketRepository.findByAppUser(userId);
+//		UserResponseDTO appUserDTO = modelMapper.map(appUser, UserResponseDTO.class);
+//		appUserDTO.setTickets(tickets);
+//
+//		return appUserDTO;
+//	}
 
 	@Override
 	public UserResponseDTO save(UserRequestDTO userRequestDTO) {
