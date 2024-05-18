@@ -4,14 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.CascadeType;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -24,51 +17,47 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 @ToString
-@Table(name = "APP_USER")
+@Table(name = "app_user")
 public class AppUser implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ID")
 	private Long id;
 
-	@Column(name = "CREATED_ON", insertable = false)
+	@Column(name = "created_on", insertable = false)
 	private Date createdOn;
 
-	@Column(name = "CREATED_BY")
+	@Column(name = "created_by")
 	private Long createdBy;
 
-	@Column(name = "MODIFIED_BY")
+	@Column(name = "modified_by")
 	private Long modifiedBy;
 
-	@Column(name = "LAST_MODIFIED", insertable = false)
+	@Column(name = "last_modified", insertable = false)
 	private Date lastModified;
 
-	@Column(name = "USERNAME")
 	private String username;
 
-	@Column(name = "PASSWORD")
 	private String password;
 
-	@Column(name = "EMAIL")
 	private String email;
 
-	@Column(name = "FIRST_NAME")
+	@Column(name = "first_name")
 	private String firstName;
 
-	@Column(name = "LAST_NAME")
+	@Column(name = "last_name")
 	private String lastName;
-	
-	@Column(name = "PHONE")
+
 	private String phone;
 	
-	@Column(name = "ENABLED_FL")
-	private boolean enabledFl;
+	@Column(name = "enable_fl")
+	private boolean enableFl;
 	
-	@Column(name = "LAST_LOGIN")
+	@Column(name = "last_login")
 	private Date lastLogin;
 
-	@OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL)
-	private List<Ticket> tickets;
+	@OneToMany(targetEntity=Ticket.class,cascade = CascadeType.ALL,
+		fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "assigneeId")
+    private List<Ticket> tickets;
 
 }

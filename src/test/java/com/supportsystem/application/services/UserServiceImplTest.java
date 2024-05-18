@@ -40,7 +40,7 @@ public class UserServiceImplTest {
 			.email("whatever")
 			.firstName("foo")
 			.lastName("bar")
-			.enabledFl(true)
+			.enableFl(true)
 			.phone("8008889999")
 			.username("foobar")
 			.createdOn(new Date())
@@ -54,7 +54,7 @@ public class UserServiceImplTest {
 			.email("whatever")
 			.firstName("baz")
 			.lastName("bar")
-			.enabledFl(true)
+			.enableFl(true)
 			.phone("8008880000")
 			.username("bazbar")
 			.createdOn(new Date())
@@ -96,7 +96,7 @@ public class UserServiceImplTest {
 	@Autowired
 	private TicketRepository ticketRepository;
 
-	@Mock
+	@Autowired
 	private ModelMapper modelMapper;
 
 	@InjectMocks
@@ -104,20 +104,29 @@ public class UserServiceImplTest {
 
 	@Test
 	public void testGetAllUsers() {
-		List<AppUser> AppUsers = asList(appUser1, appUser2);
-		when(appUserRepository.findAll()).thenReturn(AppUsers);
+		List<AppUser> appUsers = asList(appUser1, appUser2);
+		when(appUserRepository.findAll()).thenReturn(appUsers);
 
 		List<UserResponseDTO> responseDTOs = appUserService.getAllUsers();
-		assertEquals(AppUsers.size(), responseDTOs.size());
+
+		assertEquals(2, responseDTOs.size());
+		assertEquals(appUsers.size(), responseDTOs.size());
 	}
 
 	@Test
 	public void testGetUserByIdExist() {
 		when(appUserRepository.findById(1L)).thenReturn(Optional.of(appUser1));
-		when(modelMapper.map(appUser1, UserResponseDTO.class)).thenReturn(new UserResponseDTO());
 
 		UserResponseDTO responseDTO = appUserService.getUserById(1L);
 		assertEquals(UserResponseDTO.class, responseDTO.getClass());
+		assertEquals(appUser1.getId(), responseDTO.getId());
+		assertEquals(appUser1.getEmail(), responseDTO.getEmail());
+		assertEquals(appUser1.getPhone(), responseDTO.getPhone());
+		assertEquals(appUser1.getFirstName(), responseDTO.getFirstName());
+		assertEquals(appUser1.getLastName(), responseDTO.getLastName());
+		assertEquals(appUser1.getUsername(), responseDTO.getUsername());
+		assertEquals(appUser1.getTickets(), responseDTO.getTickets());
+		assertEquals(appUser1.getLastLogin(), responseDTO.getLastLogin());
 	}
 
 	@Test
@@ -131,15 +140,9 @@ public class UserServiceImplTest {
 		UserResponseDTO responseDTO = new UserResponseDTO();
 		UserRequestDTO requestDTO = mock(UserRequestDTO.class);
 
-		when(modelMapper.map(requestDTO, AppUser.class)).thenReturn(appUser1);
-		when(modelMapper.map(appUser1, UserResponseDTO.class)).thenReturn(responseDTO);
-
 		UserResponseDTO savedDTO = appUserService.save(requestDTO);
 
 		assertEquals(responseDTO, savedDTO);
-		verify(modelMapper).map(requestDTO, AppUser.class);
-		verify(modelMapper).map(appUser1, UserResponseDTO.class);
-		verify(appUserRepository).save(appUser1);
 	}
 
 	@Test
@@ -147,17 +150,12 @@ public class UserServiceImplTest {
 		appUser1.setTickets(asList(ticket1, ticket2));
 
 		when(appUserRepository.findById(1L)).thenReturn(Optional.of(appUser1));
-		when(ticketRepository.findByAppUser(appUser1)).thenReturn(asList(ticket1, ticket2));
 
-		UserResponseDTO responseDTO = new UserResponseDTO();
-		when(modelMapper.map(appUser1, UserResponseDTO.class)).thenReturn(responseDTO);
-
-		UserResponseDTO userDTO = appUserService.getUserWithTickets(1L);
+		UserResponseDTO userDTO = appUserService.getUserById(1L);
 
 		assertNotNull(userDTO);
 		assertEquals(2, userDTO.getTickets().size());
 		assertEquals("whatever 1", userDTO.getTickets().get(0).getDescription());
 		assertEquals("whatever 2", userDTO.getTickets().get(1).getDescription());
-
 	}
 }

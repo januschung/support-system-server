@@ -45,7 +45,7 @@ class AppUserControllerTest {
 		responseDTO_1.setEmail("foo@bar.com");
 		responseDTO_1.setFirstName("foo");
 		responseDTO_1.setLastName("bar");
-		responseDTO_1.setEnabledFl(true);
+		responseDTO_1.setEnableFl(true);
 		responseDTO_1.setId(1L);
 		responseDTO_1.setPhone("8008889999");
 		responseDTO_1.setUsername("foobar");
@@ -54,7 +54,7 @@ class AppUserControllerTest {
 		responseDTO_2.setEmail("baz@bar.com");
 		responseDTO_2.setFirstName("baz");
 		responseDTO_2.setLastName("bar");
-		responseDTO_2.setEnabledFl(true);
+		responseDTO_2.setEnableFl(true);
 		responseDTO_2.setId(2L);
 		responseDTO_2.setPhone("8008880000");
 		responseDTO_2.setUsername("bazbar");
@@ -74,8 +74,8 @@ class AppUserControllerTest {
 		assertNotNull(result);
 		assertEquals(200, result.getResponse().getStatus());
 		System.out.println(result);
-		String expected = "[{id:1,username:foobar,email:foo@bar.com,firstName:foo,lastName:bar,phone:'8008889999',enabledFl:true}," +
-			"{id:2,username:bazbar,email:baz@bar.com,firstName:baz,lastName:bar,phone:'8008880000',enabledFl:true}]";
+		String expected = "[{id:1,username:foobar,email:foo@bar.com,firstName:foo,lastName:bar,phone:'8008889999',enableFl:true}," +
+			"{id:2,username:bazbar,email:baz@bar.com,firstName:baz,lastName:bar,phone:'8008880000',enableFl:true}]";
 		JSONAssert.assertEquals(expected, result.getResponse().getContentAsString(), false);
 	}
 
@@ -90,7 +90,7 @@ class AppUserControllerTest {
 		assertNotNull(result);
 		assertEquals(200, result.getResponse().getStatus());
 		
-		String expected = "{id:1,username:foobar,email:foo@bar.com,firstName:foo,lastName:bar,phone:'8008889999',enabledFl:true}";
+		String expected = "{id:1,username:foobar,email:foo@bar.com,firstName:foo,lastName:bar,phone:'8008889999',enableFl:true}";
 		JSONAssert.assertEquals(expected, result.getResponse().getContentAsString(), false);
 	}
 	
@@ -119,7 +119,7 @@ class AppUserControllerTest {
 
 		assertNotNull(result);
 		assertEquals(200, result.getResponse().getStatus());
-		String expected = "{id:1,username:foobar,email:foo@bar.com,firstName:foo,lastName:bar,phone:'8008889999',enabledFl:true}";
+		String expected = "{id:1,username:foobar,email:foo@bar.com,firstName:foo,lastName:bar,phone:'8008889999',enableFl:true}";
 		JSONAssert.assertEquals(expected, result.getResponse().getContentAsString(), false);
 
 		verify(service, times(1)).save(requestDTO);

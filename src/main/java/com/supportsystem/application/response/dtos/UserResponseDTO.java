@@ -21,7 +21,7 @@ public class UserResponseDTO {
 
 	private String phone;
 
-	private boolean enabledFl;
+	private boolean enableFl;
 
 	private Date lastLogin;
 
