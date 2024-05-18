@@ -6,8 +6,10 @@ import com.supportsystem.application.shared.Status;
 import com.supportsystem.application.shared.Status.Resolution;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
+@Builder
 @Data
 @AllArgsConstructor
 public class TicketRequestDTO {

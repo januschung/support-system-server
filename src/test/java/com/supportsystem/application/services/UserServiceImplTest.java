@@ -4,7 +4,6 @@ import com.supportsystem.application.domains.AppUser;
 import com.supportsystem.application.domains.Ticket;
 import com.supportsystem.application.exceptions.UserNotFoundException;
 import com.supportsystem.application.repositories.AppUserRepository;
-import com.supportsystem.application.repositories.TicketRepository;
 import com.supportsystem.application.request.dtos.UserRequestDTO;
 import com.supportsystem.application.response.dtos.UserResponseDTO;
 import com.supportsystem.application.shared.Status;
@@ -14,7 +13,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
@@ -30,6 +28,7 @@ public class UserServiceImplTest {
 	private static AppUser appUser2;
 	private static Ticket ticket1;
 	private static Ticket ticket2;
+	private static UserRequestDTO requestDTO;
 
 	@BeforeAll
 	public static void init() {
@@ -86,18 +85,18 @@ public class UserServiceImplTest {
 			.createdOn(new Date())
 			.lastModified(new Date())
 			.build();
+
+		requestDTO = UserRequestDTO.builder()
+			.firstName("John")
+			.lastName("Doe")
+			.phone("9999")
+			.email("JDoe@whatever.com")
+			.build();
 	}
 
 	@Mock
 	@Autowired
 	private AppUserRepository appUserRepository;
-
-	@Mock
-	@Autowired
-	private TicketRepository ticketRepository;
-
-	@Autowired
-	private ModelMapper modelMapper;
 
 	@InjectMocks
 	private AppUserServiceImpl appUserService;
@@ -137,12 +136,11 @@ public class UserServiceImplTest {
 
 	@Test
 	public void testSave() {
-		UserResponseDTO responseDTO = new UserResponseDTO();
-		UserRequestDTO requestDTO = mock(UserRequestDTO.class);
-
 		UserResponseDTO savedDTO = appUserService.save(requestDTO);
-
-		assertEquals(responseDTO, savedDTO);
+		assertEquals(requestDTO.getEmail(), savedDTO.getEmail());
+		assertEquals(requestDTO.getFirstName(), savedDTO.getFirstName());
+		assertEquals(requestDTO.getLastName(), savedDTO.getLastName());
+		assertEquals(requestDTO.getPhone(), savedDTO.getPhone());
 	}
 
 	@Test
