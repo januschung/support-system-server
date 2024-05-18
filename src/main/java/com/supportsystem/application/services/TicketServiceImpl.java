@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,8 +38,8 @@ public class TicketServiceImpl implements TicketService {
 
 	@Override
 	public TicketResponseDTO save(TicketRequestDTO ticketRequestDTO) {
+		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 		Ticket entity = modelMapper.map(ticketRequestDTO, Ticket.class);
-		entity.setCreatedBy(-1L);
 		ticketRepository.save(entity);
 		return modelMapper.map(entity, TicketResponseDTO.class);
 	}
