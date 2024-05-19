@@ -2,6 +2,7 @@ package com.supportsystem.application.domains;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import jakarta.persistence.*;
 
@@ -49,5 +50,9 @@ public class Ticket implements Serializable {
 
 	@Enumerated(EnumType.STRING)
 	private Status.Resolution resolution;
+
+	@OneToMany(targetEntity=Ticket.class,cascade = CascadeType.ALL,
+		fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "ticketId")
+	private List<TicketComment> ticketComments;
 
 }
