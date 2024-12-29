@@ -1,9 +1,9 @@
 package com.supportsystem.application.response.dtos;
 
 import java.util.Date;
+import java.util.List;
 
 import com.supportsystem.application.shared.Status;
-import com.supportsystem.application.shared.Status.Resolution;
 
 import lombok.Data;
 
@@ -30,4 +30,5 @@ public class TicketResponseDTO {
 
 	private Status.Resolution resolution;
 
+    private List<TicketCommentResponseDTO> ticketComments;
 }

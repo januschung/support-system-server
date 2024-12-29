@@ -13,6 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 @ToString
+@Table(name = "ticket_comment")
 public class TicketComment implements Serializable {
 
 	@Id
@@ -27,6 +28,9 @@ public class TicketComment implements Serializable {
 
 	@Column(name = "created_by")
 	private Long createdBy;
+
+    @Column(name = "modified_by")
+    private Long modifiedBy;
 
 	@Column(name = "last_modified", insertable = false)
 	private Date lastModified;

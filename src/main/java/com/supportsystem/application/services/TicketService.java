@@ -7,10 +7,13 @@ import com.supportsystem.application.request.dtos.TicketRequestDTO;
 
 public interface TicketService {
 
-	List<TicketResponseDTO> getAllTickets();
+    List<TicketResponseDTO> getAllTickets();
 
-	TicketResponseDTO getTicketById(Long id);
+    TicketResponseDTO getTicketById(Long id);
 
-	TicketResponseDTO save(TicketRequestDTO ticketRequestDTO);
+    TicketResponseDTO createTicket(TicketRequestDTO ticketRequestDTO);
 
+    TicketResponseDTO updateTicket(Long id, TicketRequestDTO ticketRequestDTO);
+
+    void deleteTicket(Long id);
 }
