@@ -1,5 +1,6 @@
 package com.supportsystem.application.services;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,31 +18,66 @@ import com.supportsystem.application.request.dtos.TicketRequestDTO;
 @Service
 public class TicketServiceImpl implements TicketService {
 
-	@Autowired
-	private TicketRepository ticketRepository;
+    private final TicketRepository ticketRepository;
+    private final ModelMapper modelMapper;
 
-	private ModelMapper modelMapper = new ModelMapper();
+    @Autowired
+    public TicketServiceImpl(TicketRepository ticketRepository, ModelMapper modelMapper) {
+        this.ticketRepository = ticketRepository;
+        this.modelMapper = modelMapper;
+        this.modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+    }
 
-	@Override
-	public List<TicketResponseDTO> getAllTickets() {
-		return ticketRepository.findAll().stream().map(ticket -> {
-			return modelMapper.map(ticket, TicketResponseDTO.class);
-		}).collect(Collectors.toList());
-	}
+    @Override
+    public List<TicketResponseDTO> getAllTickets() {
+        return ticketRepository.findAll().stream()
+            .map(ticket -> modelMapper.map(ticket, TicketResponseDTO.class))
+            .collect(Collectors.toList());
+    }
 
-	@Override
-	public TicketResponseDTO getTicketById(Long id) {
-		return ticketRepository.findById(id).map(ticket -> {
-			return modelMapper.map(ticket, TicketResponseDTO.class);
-		}).orElseThrow(() -> new TicketNotFoundException(id));
-	}
+    @Override
+    public TicketResponseDTO getTicketById(Long id) {
+        Ticket ticket = ticketRepository.findById(id)
+            .orElseThrow(() -> new TicketNotFoundException(id));
+        return modelMapper.map(ticket, TicketResponseDTO.class);
+    }
 
-	@Override
-	public TicketResponseDTO save(TicketRequestDTO ticketRequestDTO) {
-		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-		Ticket entity = modelMapper.map(ticketRequestDTO, Ticket.class);
-		ticketRepository.save(entity);
-		return modelMapper.map(entity, TicketResponseDTO.class);
-	}
+    @Override
+    public TicketResponseDTO createTicket(TicketRequestDTO ticketRequestDTO) {
+        // Create a new ticket entity
+        Ticket ticket = modelMapper.map(ticketRequestDTO, Ticket.class);
+        ticketRepository.save(ticket);
+        // Return the created ticket as DTO
+        return modelMapper.map(ticket, TicketResponseDTO.class);
+    }
 
+    @Override
+    public TicketResponseDTO updateTicket(Long id, TicketRequestDTO ticketRequestDTO) {
+        // Find the ticket to update
+        Ticket existingTicket = ticketRepository.findById(id)
+            .orElseThrow(() -> new TicketNotFoundException(id));
+
+        // Update the ticket with new values
+        existingTicket.setAssigneeId(ticketRequestDTO.getAssigneeId());
+        existingTicket.setClientId(ticketRequestDTO.getClientId());
+        existingTicket.setDescription(ticketRequestDTO.getDescription());
+        existingTicket.setResolution(ticketRequestDTO.getResolution());
+        existingTicket.setStatus(ticketRequestDTO.getStatus());
+        existingTicket.setLastModified(new Date());
+        existingTicket.setModifiedBy(ticketRequestDTO.getModifiedBy());
+
+        ticketRepository.save(existingTicket);
+
+        // Return the updated ticket as DTO
+        return modelMapper.map(existingTicket, TicketResponseDTO.class);
+    }
+
+    @Override
+    public void deleteTicket(Long id) {
+        // Ensure the ticket exists before deleting
+        Ticket existingTicket = ticketRepository.findById(id)
+            .orElseThrow(() -> new TicketNotFoundException(id));
+
+        ticketRepository.delete(existingTicket);
+    }
 }

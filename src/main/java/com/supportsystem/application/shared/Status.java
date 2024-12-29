@@ -7,7 +7,7 @@ public class Status {
 	}
 	
 	public enum Resolution {
-		UNRESOLVED, RESOLVED, WILL_NOT_DO, DUPLICATE
+		UNRESOLVED, RESOLVED, WONT_FIX, DUPLICATE
 	}
 
 }
