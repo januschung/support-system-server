@@ -5,16 +5,21 @@ import com.supportsystem.application.request.dtos.UserRequestDTO;
 import com.supportsystem.application.response.dtos.UserResponseDTO;
 import com.supportsystem.application.services.AppUserService;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.skyscreamer.jsonassert.JSONAssert;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.List;
 
@@ -26,19 +31,28 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(AppUserController.class)
+@ExtendWith(MockitoExtension.class)
+@AutoConfigureMockMvc(addFilters = false)
+@ActiveProfiles("test")
 class AppUserControllerTest {
-	
-	@Autowired
+
 	private MockMvc mockMvc;
-	
-	@MockBean
+
+	@Mock
 	private AppUserService service;
-	
+
+    @InjectMocks
+    private AppUserController appUserController;
+
+    @BeforeEach
+    public void setUp() {
+        mockMvc = MockMvcBuilders.standaloneSetup(appUserController).build();
+    }
+
 	private static UserResponseDTO responseDTO_1;
 	private static UserResponseDTO responseDTO_2;
 	private static UserRequestDTO requestDTO;
-	
+
 	@BeforeAll
 	public static void init() {
 		responseDTO_1 = new UserResponseDTO();
@@ -60,7 +74,7 @@ class AppUserControllerTest {
 		responseDTO_2.setUsername("bazbar");
 
 		requestDTO = new UserRequestDTO("foo", "foo@bar.com", "foo", "bar", "8008889999", "abc");
-		
+
 	}
 
 	@Test
@@ -81,29 +95,29 @@ class AppUserControllerTest {
 
 	@Test
 	public void testGetUserByIdExistingUser() throws Exception {
-		
+
 		when(service.getUserById(anyLong())).thenReturn(responseDTO_1);
-		
+
 		RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/users/1").accept(MediaType.APPLICATION_JSON);
 		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
-		
+
 		assertNotNull(result);
 		assertEquals(200, result.getResponse().getStatus());
-		
+
 		String expected = "{id:1,username:foobar,email:foo@bar.com,firstName:foo,lastName:bar,phone:'8008889999',enableFl:true}";
 		JSONAssert.assertEquals(expected, result.getResponse().getContentAsString(), false);
 	}
-	
+
 	@Test
 	public void testGetUserByIdNonExistingUser() throws Exception {
-		
+
 		when(service.getUserById(anyLong())).thenThrow(new TicketNotFoundException(999L));
-		
+
 		RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/users/999").accept(MediaType.APPLICATION_JSON);
 		mockMvc.perform(requestBuilder).andDo(print())
 		.andExpect(status().isNotFound());
 		verify(service, times(1)).getUserById(999L);
-		
+
 	}
 
 	@Test

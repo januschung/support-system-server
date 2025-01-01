@@ -3,13 +3,20 @@ package com.supportsystem.application.domains;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.ToString;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 @Entity
 @Data
@@ -20,44 +27,63 @@ import lombok.ToString;
 @Table(name = "app_user")
 public class AppUser implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(name = "created_on", insertable = false)
-	private Date createdOn;
+    @CreatedDate
+    @Column(name = "created_on", updatable = false)
+    private Date createdOn;
 
-	@Column(name = "created_by")
-	private Long createdBy;
+    @LastModifiedDate
+    @Column(name = "last_modified")
+    private Date lastModified;
 
-	@Column(name = "modified_by")
-	private Long modifiedBy;
+    @Column(name = "created_by")
+    private Long createdBy;
 
-	@Column(name = "last_modified", insertable = false)
-	private Date lastModified;
+    @Column(name = "modified_by")
+    private Long modifiedBy;
 
-	private String username;
+    @NotNull
+    @Column(unique = true, nullable = false)
+    private String username;
 
-	private String password;
+    @JsonIgnore
+    @NotNull
+    @Column(nullable = false)
+    private String password;
 
-	private String email;
+    @NotNull
+    @Email
+    @Column(unique = true, nullable = false)
+    @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z]{2,6}$", message = "Invalid email address")
+    private String email;
 
-	@Column(name = "first_name")
-	private String firstName;
+    @Column(name = "first_name")
+    private String firstName;
 
-	@Column(name = "last_name")
-	private String lastName;
+    @Column(name = "last_name")
+    private String lastName;
 
-	private String phone;
-	
-	@Column(name = "enable_fl")
-	private boolean enableFl;
-	
-	@Column(name = "last_login")
-	private Date lastLogin;
+    private String phone;
 
-	@OneToMany(targetEntity=Ticket.class,cascade = CascadeType.ALL,
-		fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "assigneeId")
+    @Column(name = "enabled", nullable = false)
+    private boolean enabled;
+
+    @Column(name = "last_login")
+    private Date lastLogin;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+        name = "app_user_role",
+        joinColumns = @JoinColumn(name = "app_user_id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles;
+
+    @ToString.Exclude
+    @JsonIgnore
+    @OneToMany(mappedBy = "assigneeId", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Ticket> tickets;
-
 }
