@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.supportsystem.application.domains.AppUser;
 import com.supportsystem.application.request.dtos.UserRequestDTO;
+import com.supportsystem.application.services.UserRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Description;
 import org.springframework.http.HttpStatus;
@@ -32,6 +33,9 @@ public class AppUserController {
     @Autowired
     private AppUserService userService;
 
+    @Autowired
+    private UserRegistrationService userRegistrationService;
+
     @PostMapping("/register")
     @Description(value = "register a new user")
     public ResponseEntity<UserResponseDTO> registerUser(@RequestBody UserRequestDTO userRequestDTO) {
@@ -41,7 +45,7 @@ public class AppUserController {
         String email = userRequestDTO.getEmail();
 
         // Call the service layer to register the user
-        AppUser registeredUser = userService.registerUser(username, password, email);
+        AppUser registeredUser = userRegistrationService.registerUser(username, password, email);
 
         // Map the AppUser to UserResponseDTO for response
         UserResponseDTO userResponseDTO = new UserResponseDTO();
