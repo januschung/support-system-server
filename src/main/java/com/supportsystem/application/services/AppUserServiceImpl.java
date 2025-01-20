@@ -1,5 +1,6 @@
 package com.supportsystem.application.services;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,8 +9,15 @@ import com.supportsystem.application.domains.Role;
 import com.supportsystem.application.repositories.RoleRepository;
 import com.supportsystem.application.request.dtos.UserRequestDTO;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +27,9 @@ import com.supportsystem.application.repositories.AppUserRepository;
 import com.supportsystem.application.response.dtos.UserResponseDTO;
 
 
+@Slf4j
 @Service
-public class AppUserServiceImpl implements AppUserService {  // Implement UserDetailsService
+public class AppUserServiceImpl implements AppUserService, UserDetailsService {  // Implement UserDetailsService
 
     @Autowired
     private AppUserRepository userRepository;
@@ -29,24 +38,6 @@ public class AppUserServiceImpl implements AppUserService {  // Implement UserDe
 
     @Autowired
     private RoleRepository roleRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    public AppUser registerUser(String username, String password, String email) {
-        Role userRole = roleRepository.findByName("ROLE_USER");
-        if (userRole == null) {
-            throw new IllegalStateException("Default role not found.");
-        }
-        AppUser user = AppUser.builder()
-            .username(username)
-            .password(passwordEncoder.encode(password))
-            .email(email)
-            .roles(Collections.singleton(userRole))
-            .enabled(true)
-            .build();
-        return userRepository.save(user);
-    }
 
     @Override
     @Transactional
@@ -71,4 +62,22 @@ public class AppUserServiceImpl implements AppUserService {  // Implement UserDe
         return modelMapper.map(entity, UserResponseDTO.class);
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        log.info("Looking for user: {}", username);
+
+        AppUser appUser = userRepository.findByUsername(username)
+            .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+
+        // Force initialization of lazy fields (e.g., roles), may not need this without using lazy
+        appUser.getRoles().size();
+
+        log.info("User found: {}", appUser.getUsername());
+
+        Collection<GrantedAuthority> authorities = appUser.getRoles().stream()
+            .map(role -> new SimpleGrantedAuthority(role.getName()))
+            .collect(Collectors.toList());
+
+        return new User(appUser.getUsername(), appUser.getPassword(), authorities);
+    }
 }

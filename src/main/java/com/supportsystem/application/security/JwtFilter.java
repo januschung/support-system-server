@@ -1,6 +1,6 @@
 package com.supportsystem.application.security;
 
-import com.supportsystem.application.services.JwtUserDetailsService;
+import com.supportsystem.application.services.AppUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,12 +19,12 @@ import java.io.IOException;
 @Component
 public class JwtFilter extends OncePerRequestFilter {
     private final JwtTokenUtil jwtTokenUtil;
-    private final JwtUserDetailsService userDetailsService;
+    private final AppUserService userService;
 
     @Autowired
-    public JwtFilter(JwtTokenUtil jwtTokenUtil, JwtUserDetailsService userDetailsService) {
+    public JwtFilter(JwtTokenUtil jwtTokenUtil, AppUserService userService) {
         this.jwtTokenUtil = jwtTokenUtil;
-        this.userDetailsService = userDetailsService;
+        this.userService = userService;
     }
 
     @Override
@@ -37,7 +37,7 @@ public class JwtFilter extends OncePerRequestFilter {
             try {
                 if (jwtTokenUtil.validateToken(token)) {
                     String username = jwtTokenUtil.extractUsername(token);
-                    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                    UserDetails userDetails = userService.loadUserByUsername(username);
 
                     UsernamePasswordAuthenticationToken authenticationToken =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

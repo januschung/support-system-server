@@ -2,9 +2,9 @@ package com.supportsystem.application.services;
 
 import java.util.List;
 
-import com.supportsystem.application.domains.AppUser;
 import com.supportsystem.application.request.dtos.UserRequestDTO;
 import com.supportsystem.application.response.dtos.UserResponseDTO;
+import org.springframework.security.core.userdetails.UserDetails;
 
 public interface AppUserService {
 	
@@ -14,5 +14,5 @@ public interface AppUserService {
 
 	UserResponseDTO save(UserRequestDTO userRequestDTO);
 
-    AppUser registerUser(String username, String password, String email);
+    UserDetails loadUserByUsername(String username);
 }
