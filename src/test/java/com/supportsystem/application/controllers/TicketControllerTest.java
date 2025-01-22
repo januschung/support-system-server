@@ -1,6 +1,6 @@
 package com.supportsystem.application.controllers;
 
-import com.supportsystem.application.exceptions.TicketNotFoundException;
+import com.supportsystem.application.exceptions.ResourceNotFoundException;
 import com.supportsystem.application.request.dtos.TicketRequestDTO;
 import com.supportsystem.application.response.dtos.TicketCommentResponseDTO;
 import com.supportsystem.application.response.dtos.TicketResponseDTO;
@@ -134,7 +134,7 @@ class TicketControllerTest {
     @Test
     public void testGetTicketByIdNonExistingTicket() throws Exception {
 
-        when(service.getTicketById(anyLong())).thenThrow(new TicketNotFoundException(999L));
+        when(service.getTicketById(anyLong())).thenThrow(new ResourceNotFoundException("Ticket", "id", 999L));
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/tickets/999").accept(MediaType.APPLICATION_JSON);
         mockMvc.perform(requestBuilder).andDo(print())
@@ -193,13 +193,13 @@ class TicketControllerTest {
 
     @Test
     public void testDeleteTicketNonExistingTicketThenThrowError() throws Exception {
-        doThrow(new TicketNotFoundException(999L)).when(service).deleteTicket(999L);
+        doThrow(new ResourceNotFoundException("Ticket", "id", 999L)).when(service).deleteTicket(999L);
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/tickets/{id}", 999L)
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNotFound())
-            .andExpect(result -> assertTrue(result.getResolvedException() instanceof TicketNotFoundException)) // Validate exception type
-            .andExpect(result -> assertEquals("Could not find ticket 999", result.getResolvedException().getMessage())) // Validate exception message
+            .andExpect(result -> assertTrue(result.getResolvedException() instanceof ResourceNotFoundException)) // Validate exception type
+            .andExpect(result -> assertEquals("Could not find Ticket with id: 999", result.getResolvedException().getMessage())) // Validate exception message
             .andDo(print());
 
         verify(service, times(1)).deleteTicket(999L);

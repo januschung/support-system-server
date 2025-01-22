@@ -1,6 +1,6 @@
 package com.supportsystem.application.controllers;
 
-import com.supportsystem.application.exceptions.TicketNotFoundException;
+import com.supportsystem.application.exceptions.ResourceNotFoundException;
 import com.supportsystem.application.request.dtos.UserRequestDTO;
 import com.supportsystem.application.response.dtos.UserResponseDTO;
 import com.supportsystem.application.services.AppUserService;
@@ -111,7 +111,7 @@ class AppUserControllerTest {
 	@Test
 	public void testGetUserByIdNonExistingUser() throws Exception {
 
-		when(service.getUserById(anyLong())).thenThrow(new TicketNotFoundException(999L));
+		when(service.getUserById(anyLong())).thenThrow(new ResourceNotFoundException("User", "id", 999L));
 
 		RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/users/999").accept(MediaType.APPLICATION_JSON);
 		mockMvc.perform(requestBuilder).andDo(print())
