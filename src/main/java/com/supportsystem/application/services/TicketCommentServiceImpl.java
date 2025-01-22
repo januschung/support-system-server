@@ -3,7 +3,7 @@ package com.supportsystem.application.services;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.supportsystem.application.exceptions.TicketCommentNotFoundException;
+import com.supportsystem.application.exceptions.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class TicketCommentServiceImpl implements TicketCommentService {
     @Override
     public List<TicketCommentResponseDTO> getAllTicketCommentsByTicketId(Long ticketId) {
         if (!ticketCommentRepository.existsByTicketId(ticketId)) {
-            throw new TicketCommentNotFoundException(ticketId);
+            throw new ResourceNotFoundException("Ticket", "id", ticketId);
         }
         return ticketCommentRepository.findAllByTicketId(ticketId).stream()
             .map(ticketComment -> modelMapper.map(ticketComment, TicketCommentResponseDTO.class))
@@ -39,11 +39,11 @@ public class TicketCommentServiceImpl implements TicketCommentService {
     @Override
     public TicketCommentResponseDTO getCommentByTicketIdAndCommentId(Long ticketId, Long commentId) {
         if (!ticketCommentRepository.existsByTicketId(ticketId)) {
-            throw new TicketCommentNotFoundException(ticketId, commentId);
+            throw new ResourceNotFoundException("Comment", "comment id", commentId);
         }
         return ticketCommentRepository.findByTicketIdAndId(ticketId, commentId)
             .map(ticketComment -> modelMapper.map(ticketComment, TicketCommentResponseDTO.class))
-            .orElseThrow(() -> new TicketCommentNotFoundException(ticketId, commentId));
+            .orElseThrow(() -> new ResourceNotFoundException("Comment", "comment id", commentId));
     }
     
 }

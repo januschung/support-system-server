@@ -1,7 +1,7 @@
 package com.supportsystem.application.services;
 
 import com.supportsystem.application.domains.Ticket;
-import com.supportsystem.application.exceptions.TicketNotFoundException;
+import com.supportsystem.application.exceptions.ResourceNotFoundException;
 import com.supportsystem.application.repositories.TicketRepository;
 import com.supportsystem.application.request.dtos.TicketRequestDTO;
 import com.supportsystem.application.response.dtos.TicketResponseDTO;
@@ -104,7 +104,7 @@ public class TicketServiceImplTest {
     @Test
     public void testGetTicketByIdNotExist() {
         when(ticketRepository.findById(999L)).thenReturn(Optional.empty());
-        assertThrows(TicketNotFoundException.class, () -> ticketService.getTicketById(999L));
+        assertThrows(ResourceNotFoundException.class, () -> ticketService.getTicketById(999L));
     }
 
     @Test
@@ -146,8 +146,8 @@ public class TicketServiceImplTest {
     public void testDeleteNonExistingTicket() {
         when(ticketRepository.findById(999L)).thenReturn(Optional.empty());
 
-        TicketNotFoundException exception = assertThrows(TicketNotFoundException.class, () -> ticketService.deleteTicket(999L));
-        assertEquals("Could not find ticket 999", exception.getMessage());
+        ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> ticketService.deleteTicket(999L));
+        assertEquals("Could not find Ticket with id: 999", exception.getMessage());
 
         verify(ticketRepository, never()).delete(any());
     }

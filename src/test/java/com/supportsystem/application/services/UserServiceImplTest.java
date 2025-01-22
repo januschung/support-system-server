@@ -2,7 +2,7 @@ package com.supportsystem.application.services;
 
 import com.supportsystem.application.domains.AppUser;
 import com.supportsystem.application.domains.Ticket;
-import com.supportsystem.application.exceptions.UserNotFoundException;
+import com.supportsystem.application.exceptions.ResourceNotFoundException;
 import com.supportsystem.application.repositories.AppUserRepository;
 import com.supportsystem.application.request.dtos.UserRequestDTO;
 import com.supportsystem.application.response.dtos.UserResponseDTO;
@@ -131,7 +131,7 @@ public class UserServiceImplTest {
 	@Test
 	public void testGetUserByIdNotExist() {
 		when(appUserRepository.findById(999L)).thenReturn(Optional.empty());
-		assertThrows(UserNotFoundException.class, () -> appUserService.getUserById(999L));
+		assertThrows(ResourceNotFoundException.class, () -> appUserService.getUserById(999L));
 	}
 
 	@Test

@@ -4,13 +4,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.supportsystem.application.exceptions.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.supportsystem.application.domains.Ticket;
-import com.supportsystem.application.exceptions.TicketNotFoundException;
 import com.supportsystem.application.repositories.TicketRepository;
 import com.supportsystem.application.response.dtos.TicketResponseDTO;
 import com.supportsystem.application.request.dtos.TicketRequestDTO;
@@ -38,7 +38,7 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public TicketResponseDTO getTicketById(Long id) {
         Ticket ticket = ticketRepository.findById(id)
-            .orElseThrow(() -> new TicketNotFoundException(id));
+            .orElseThrow(() -> new ResourceNotFoundException("Ticket", "id", id));
         return modelMapper.map(ticket, TicketResponseDTO.class);
     }
 
@@ -55,7 +55,7 @@ public class TicketServiceImpl implements TicketService {
     public TicketResponseDTO updateTicket(Long id, TicketRequestDTO ticketRequestDTO) {
         // Find the ticket to update
         Ticket existingTicket = ticketRepository.findById(id)
-            .orElseThrow(() -> new TicketNotFoundException(id));
+            .orElseThrow(() -> new ResourceNotFoundException("Ticket", "id", id));
 
         // Update the ticket with new values
         existingTicket.setAssigneeId(ticketRequestDTO.getAssigneeId());
@@ -76,7 +76,7 @@ public class TicketServiceImpl implements TicketService {
     public void deleteTicket(Long id) {
         // Ensure the ticket exists before deleting
         Ticket existingTicket = ticketRepository.findById(id)
-            .orElseThrow(() -> new TicketNotFoundException(id));
+            .orElseThrow(() -> new ResourceNotFoundException("Ticket", "id", id));
 
         ticketRepository.delete(existingTicket);
     }

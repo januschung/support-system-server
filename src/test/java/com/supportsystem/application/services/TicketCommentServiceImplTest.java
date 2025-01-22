@@ -1,8 +1,8 @@
 package com.supportsystem.application.services;
 
+import com.supportsystem.application.exceptions.ResourceNotFoundException;
 import com.supportsystem.application.response.dtos.TicketCommentResponseDTO;
 import com.supportsystem.application.repositories.TicketCommentRepository;
-import com.supportsystem.application.exceptions.TicketCommentNotFoundException;
 import com.supportsystem.application.domains.TicketComment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -91,19 +91,19 @@ class TicketCommentServiceImplTest {
         when(ticketCommentRepository.existsByTicketId(1L)).thenReturn(Boolean.TRUE);
         when(ticketCommentRepository.findByTicketIdAndId(1L, 999L)).thenReturn(Optional.empty());
 
-        TicketCommentNotFoundException exception = assertThrows(TicketCommentNotFoundException.class, () -> {
+        ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
             ticketCommentService.getCommentByTicketIdAndCommentId(1L, 999L);
         });
 
-        assertEquals("Could not find comment 999 for ticket 1", exception.getMessage());
+        assertEquals("Could not find Comment with comment id: 999", exception.getMessage());
     }
 
     @Test
     public void testGetCommentByTicketIdAndCommentId_NonExistingComment() {
-        TicketCommentNotFoundException exception = assertThrows(TicketCommentNotFoundException.class, () -> {
+        ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
             ticketCommentService.getCommentByTicketIdAndCommentId(1L, 999L);
         });
 
-        assertEquals("Could not find comment 999 for ticket 1", exception.getMessage());
+        assertEquals("Could not find Comment with comment id: 999", exception.getMessage());
     }
 }

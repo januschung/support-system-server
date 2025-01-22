@@ -1,11 +1,10 @@
 package com.supportsystem.application.services;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.supportsystem.application.domains.Role;
+import com.supportsystem.application.exceptions.ResourceNotFoundException;
 import com.supportsystem.application.repositories.RoleRepository;
 import com.supportsystem.application.request.dtos.UserRequestDTO;
 import jakarta.transaction.Transactional;
@@ -18,11 +17,9 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.supportsystem.application.domains.AppUser;
-import com.supportsystem.application.exceptions.UserNotFoundException;
 import com.supportsystem.application.repositories.AppUserRepository;
 import com.supportsystem.application.response.dtos.UserResponseDTO;
 
@@ -51,7 +48,7 @@ public class AppUserServiceImpl implements AppUserService, UserDetailsService { 
     public UserResponseDTO getUserById(Long id) {
         return userRepository.findById(id).map(user -> {
             return modelMapper.map(user, UserResponseDTO.class);
-        }).orElseThrow(() -> new UserNotFoundException(id));
+        }).orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
     }
 
     @Override
