@@ -24,17 +24,16 @@ import com.supportsystem.application.request.dtos.TicketRequestDTO;
 import com.supportsystem.application.services.TicketService;
 
 import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
 
 @Slf4j
 @RestController
 @RequestMapping("/tickets")
+@RequiredArgsConstructor
 public class TicketController {
 
-    @Autowired
-    private TicketService ticketService;
-
-    @Autowired
-    private TicketCommentService ticketCommentService;
+    private final TicketService ticketService;
+    private final TicketCommentService ticketCommentService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @Description(value = "returns all tickets")

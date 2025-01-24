@@ -4,7 +4,7 @@ import com.supportsystem.application.domains.AppUser;
 import com.supportsystem.application.domains.Role;
 import com.supportsystem.application.repositories.AppUserRepository;
 import com.supportsystem.application.repositories.RoleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -12,16 +12,12 @@ import java.util.Collections;
 
 
 @Service
+@RequiredArgsConstructor
 public class UserRegistrationServiceImpl implements UserRegistrationService {
 
-    @Autowired
-    private AppUserRepository userRepository;
-
-    @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final AppUserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
 
     public AppUser registerUser(String username, String password, String email) {

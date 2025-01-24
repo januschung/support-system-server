@@ -1,16 +1,14 @@
 package com.supportsystem.application.services;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import com.supportsystem.application.domains.AppUser;
 import com.supportsystem.application.exceptions.ResourceNotFoundException;
-import com.supportsystem.application.repositories.RoleRepository;
+import com.supportsystem.application.repositories.AppUserRepository;
 import com.supportsystem.application.request.dtos.UserRequestDTO;
+import com.supportsystem.application.response.dtos.UserResponseDTO;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -19,22 +17,18 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.supportsystem.application.domains.AppUser;
-import com.supportsystem.application.repositories.AppUserRepository;
-import com.supportsystem.application.response.dtos.UserResponseDTO;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class AppUserServiceImpl implements AppUserService, UserDetailsService {  // Implement UserDetailsService
 
-    @Autowired
-    private AppUserRepository userRepository;
-
-    private ModelMapper modelMapper = new ModelMapper();
-
-    @Autowired
-    private RoleRepository roleRepository;
+    private final AppUserRepository userRepository;
+    private final ModelMapper modelMapper;
 
     @Override
     @Transactional

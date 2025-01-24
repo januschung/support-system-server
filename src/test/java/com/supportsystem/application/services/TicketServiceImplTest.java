@@ -10,9 +10,11 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -70,7 +72,6 @@ public class TicketServiceImplTest {
 
     @BeforeEach
     public void setUp() {
-        // Manually initialize the ModelMapper here
         ticketService = new TicketServiceImpl(ticketRepository, new ModelMapper());
     }
 

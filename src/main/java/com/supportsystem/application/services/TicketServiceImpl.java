@@ -1,19 +1,19 @@
 package com.supportsystem.application.services;
 
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import com.supportsystem.application.domains.Ticket;
 import com.supportsystem.application.exceptions.ResourceNotFoundException;
+import com.supportsystem.application.repositories.TicketRepository;
+import com.supportsystem.application.request.dtos.TicketRequestDTO;
+import com.supportsystem.application.response.dtos.TicketResponseDTO;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.supportsystem.application.domains.Ticket;
-import com.supportsystem.application.repositories.TicketRepository;
-import com.supportsystem.application.response.dtos.TicketResponseDTO;
-import com.supportsystem.application.request.dtos.TicketRequestDTO;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TicketServiceImpl implements TicketService {
