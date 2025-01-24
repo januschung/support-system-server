@@ -2,16 +2,16 @@ package com.supportsystem.application.services;
 
 import com.supportsystem.application.domains.Role;
 import com.supportsystem.application.repositories.RoleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class RoleServiceImpl implements RoleService {
 
-    @Autowired
-    private RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
     @Override
     public Role createRole(String roleName) {

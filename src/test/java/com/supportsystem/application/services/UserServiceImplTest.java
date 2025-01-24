@@ -8,11 +8,13 @@ import com.supportsystem.application.request.dtos.UserRequestDTO;
 import com.supportsystem.application.response.dtos.UserResponseDTO;
 import com.supportsystem.application.shared.Status;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
@@ -95,11 +97,14 @@ public class UserServiceImplTest {
 	}
 
 	@Mock
-	@Autowired
 	private AppUserRepository appUserRepository;
 
-	@InjectMocks
 	private AppUserServiceImpl appUserService;
+
+    @BeforeEach
+    public void setUp() {
+        appUserService = new AppUserServiceImpl(appUserRepository, new ModelMapper());
+    }
 
 	@Test
 	public void testGetAllUsers() {
