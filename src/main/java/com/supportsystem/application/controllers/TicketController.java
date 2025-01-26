@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.supportsystem.application.response.dtos.TicketCommentResponseDTO;
 import com.supportsystem.application.services.TicketCommentService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Description;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/tickets")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class TicketController {
 
     private final TicketService ticketService;
